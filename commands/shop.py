@@ -9,7 +9,7 @@ class Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='shop')
+    @commands.slash_command(name='shop', description="Просмотреть магазин")
     async def shop(self, inter: disnake.AppCommandInteraction):
         cur.execute("SELECT * FROM store")
         items = cur.fetchall()
@@ -35,7 +35,7 @@ class Shop(commands.Cog):
                 await inter.response.send_message(embed=disnake.Embed(
                 title="Магазин",
                 description=str
-            ))
+            ), ephemeral=True)
                 
 
 

@@ -19,7 +19,7 @@ def checkUser(member_id):
 class Delmoney(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.slash_command(name='delmoney')
+    @commands.slash_command(name='delmoney', description="Лишить монет пользователя")
     @commands.has_permissions(administrator=True)
     async def delmoney(self, inter: disnake.ApplicationCommandInteraction, sum: int, member: disnake.Member = None, type: int = commands.Param(
         choices=[
@@ -35,7 +35,7 @@ class Delmoney(commands.Cog):
                 title="Недопустимное значение",
                 description="Сумма меньше нуля, а это недопустимо"
             )
-            await inter.response.send_message(embed=embed)
+            await inter.response.send_message(embed=embed, ephemeral=True)
         else:
             cur.execute("SELECT * FROM users WHERE dsID = ?", (member.id,))
             res = cur.fetchone()
@@ -48,7 +48,7 @@ class Delmoney(commands.Cog):
 Вы успешно лишили **{sum}** монет пользователя
 """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
             else:
                 cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (res[2]-sum, member.id))
                 con.commit()
@@ -58,7 +58,7 @@ class Delmoney(commands.Cog):
 Вы успешно лишили **{sum}** монет пользователя
 """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
 
 
     @delmoney.error
@@ -68,7 +68,7 @@ class Delmoney(commands.Cog):
                 title="Ошибка",
                 description="У вас недостаточно прав для использования команды"
             )
-            await inter.response.send_message(embed=embedError)
+            await inter.response.send_message(embed=embedError, ephemeral=True)
             
 
 

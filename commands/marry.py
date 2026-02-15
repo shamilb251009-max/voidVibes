@@ -48,7 +48,7 @@ class Marry(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='marry')
+    @commands.slash_command(name='marry', description="Предложить пользователю брак")
     async def marry(self, inter: disnake.AppCommandInteraction, member: disnake.Member):
         if member == inter.author:
             await inter.response.send_message("Нельзя отправить предложение самому себе!", ephemeral=True)

@@ -79,7 +79,7 @@ class Modal(disnake.ui.Modal):
             inline=False
         )
 
-        staff_chat = await self.bot.fetch_channel(1470017010854265060)
+        staff_chat = await self.bot.fetch_channel(1458937812148818033)
         view = Edit_verify(self.bot, interaction.author.id, arr)
         await staff_chat.send(embed=embed, view=view)
 
@@ -95,10 +95,10 @@ class Button(disnake.ui.View):
 class Verify(commands.Cog):
     def __init__(self, bot):
         self.bot = bot 
-    @commands.slash_command(name='verify')
-    async def verify(self, inter: disnake.AppCommandInteraction):
+    @commands.command(name='verify')
+    async def verify(self, ctx):
         view = Button(self.bot)
-        await inter.response.send_message(embed=disnake.Embed(description="Чтобы пройти верификацию нажмите на кнопку ниже"), view=view)
+        await ctx.send(embed=disnake.Embed(description="Чтобы пройти верификацию нажмите на кнопку ниже"), view=view)
 
 
 def setup(bot):

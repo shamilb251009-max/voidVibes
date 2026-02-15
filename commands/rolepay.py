@@ -20,7 +20,7 @@ class Rolepay(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='rolepay')
+    @commands.slash_command(name='rolepay', description="Выдать деньги всем обладателям определенной роли")
     @commands.has_permissions(administrator=True)
     async def rolepay(self, inter: disnake.AppCommandInteraction, role: disnake.Role, sum: int):
         members = role.members
@@ -35,7 +35,7 @@ class Rolepay(commands.Cog):
 Вы успешно выдали всем пользователям с ролью {role.mention} по **{sum}** монет
 """
         )
-        await inter.response.send_message(embed=embed)
+        await inter.response.send_message(embed=embed, ephemeral=True)
         
 
 def setup(bot):

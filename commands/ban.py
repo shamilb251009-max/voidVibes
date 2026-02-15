@@ -6,7 +6,7 @@ class Ban(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='ban')
+    @commands.slash_command(name='ban', description="Заблокировать пользователя на сервере")
     @commands.has_permissions(ban_members=True)
     async def ban(self, inter: disnake.ApplicationCommandInteraction, member: disnake.Member, time: int, reason: str = "Не указана"):
         try:
@@ -15,13 +15,13 @@ class Ban(commands.Cog):
                     title="Ошибка",
                     description="Нельзя заблокировать самого себя!"
                 )
-                await inter.response.send_message(embed=embedError)
+                await inter.response.send_message(embed=embedError, ephemeral=True)
             elif member == await self.bot.fetch_user(1468639801833160887):
                 embedError = disnake.Embed(
                     title="Ошибка",
                     description="Я бот... Зачем меня блокировать?"
                 )
-                await inter.response.send_message(embed=embedError)
+                await inter.response.send_message(embed=embedError, ephemeral=True)
             else:
                 log = await self.bot.fetch_channel(os.getenv('BANS'))
                 embedBan = disnake.Embed(
@@ -57,7 +57,7 @@ class Ban(commands.Cog):
                 title="Ошибка",
                 description="Произошла недпридвиденная ошибка. Повторите попытку позже"
             )
-            await inter.response.send_message(embed=embedError)
+            await inter.response.send_message(embed=embedError, ephemeral=True)
     
     @ban.error
     async def ban_error(self, inter, error):
@@ -66,7 +66,7 @@ class Ban(commands.Cog):
                 title="Ошибка",
                 description="У вас недостаточно прав для использования команды"
             )
-            await inter.response.send_message(embed=embedError)
+            await inter.response.send_message(embed=embedError, ephemeral=True)
             
 
 def setup(bot):

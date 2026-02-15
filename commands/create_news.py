@@ -41,13 +41,13 @@ class Modal(disnake.ui.Modal):
         title="Ошибка", 
         description="Произошла недпридвиденная ошибка. Повторите попытку позже"    
     )   
-                await inter.response.send_message(embed=error)
+                await inter.response.send_message(embed=error, ephemeral=True)
 
 class Create_news(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='create_news')
+    @commands.slash_command(name='create_news', description="Создать новость")
     async def create_news(self, inter: disnake.AppCommandInteraction, channel: disnake.TextChannel):
         modal = Modal(self.bot, channel)
         await inter.response.send_modal(modal=modal)

@@ -20,7 +20,7 @@ class Stats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='stats')
+    @commands.slash_command(name='stats', description="Посмотреть свою статистику")
     async def stats(self, inter: disnake.AppCommandInteraction, member: disnake.Member = None):
         try:
             if member is None:
@@ -50,13 +50,13 @@ class Stats(commands.Cog):
     **Дата брака:** `{date}`
             """
             )
-            await inter.response.send_message(embed=embed)
+            await inter.response.send_message(embed=embed, ephemeral=True)
         except Exception:
                 error = disnake.Embed(
         title="Ошибка", 
         description="Произошла недпридвиденная ошибка. Повторите попытку позже"    
     )   
-                await inter.response.send_message(embed=error)
+                await inter.response.send_message(embed=error, ephemeral=True)
         
 
         

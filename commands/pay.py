@@ -20,7 +20,7 @@ class Pay(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.slash_command(name='pay')
+    @commands.slash_command(name='pay', description="Скинуть другому пользователю деньги на карту")
     async def pay(self, inter: disnake.AppCommandInteraction, member: disnake.Member, sum: int):
         try:
             author = inter.author
@@ -52,13 +52,13 @@ class Pay(commands.Cog):
     Вы успешно передали {sum} монет {member.mention}
     """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
         except Exception:
             embedError = disnake.Embed(
                 title="Ошибка",
                 description="Произошла недпридвиденная ошибка. Повторите попытку позже"
             )
-            await inter.response.send_message(embed=embedError)
+            await inter.response.send_message(embed=embedError, ephemeral=True)
 
 
 

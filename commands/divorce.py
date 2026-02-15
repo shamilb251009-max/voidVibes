@@ -32,7 +32,7 @@ class Divorce(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='divorce')
+    @commands.slash_command(name='divorce', description="Развестись с пользователем")
     async def divorce(self, inter: disnake.AppCommandInteraction):
         cur.execute("SELECT * FROM marriages WHERE one_id = ? OR two_id = ?", (inter.author.id, inter.author.id))
         result = cur.fetchone()

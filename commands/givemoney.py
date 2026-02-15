@@ -19,7 +19,7 @@ def checkUser(member_id):
 class Givemoney(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.slash_command(name='givemoney')
+    @commands.slash_command(name='givemoney', description="Выдать деньги пользователю")
     @commands.has_permissions(administrator=True)
     async def givemoney(self, inter: disnake.ApplicationCommandInteraction, sum: int, member: disnake.Member = None, type: int = commands.Param(
         choices=[
@@ -35,7 +35,7 @@ class Givemoney(commands.Cog):
                 title="Недопустимное значение",
                 description="Сумма меньше нуля, а это недопустимо"
             )
-            await inter.response.send_message(embed=embed)
+            await inter.response.send_message(embed=embed, ephemeral=True)
         else:
             cur.execute("SELECT * FROM users WHERE dsID = ?", (member.id,))
             res = cur.fetchone()
@@ -48,7 +48,7 @@ class Givemoney(commands.Cog):
 Вы успешно выдали **{sum}** монет пользователю
 """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
             else:
                 cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (res[2]+sum, member.id))
                 con.commit()
@@ -58,7 +58,7 @@ class Givemoney(commands.Cog):
 Вы успешно выдали **{sum}** монет пользователю
 """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
 
 
     @givemoney.error
@@ -68,7 +68,7 @@ class Givemoney(commands.Cog):
                 title="Ошибка",
                 description="У вас недостаточно прав для использования команды"
             )
-            await inter.response.send_message(embed=embedError)
+            await inter.response.send_message(embed=embedError, ephemeral=True)
             
 
 

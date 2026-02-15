@@ -19,7 +19,7 @@ def checkUser(member_id):
 class Wallet(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.slash_command(name='wallet')
+    @commands.slash_command(name='wallet', description="Вывести деньги с карты в кошелек")
     async def deposit(self, inter: disnake.AppCommandInteraction, sum: int = None):
         try:
             member = inter.author
@@ -31,13 +31,13 @@ class Wallet(commands.Cog):
                     title="Недостаточно средств",
                     description="У вас нету столько монет на карте"
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
             elif sum < 0:
                 embed = disnake.Embed(
                     title="Недопустимое значение",
                     description="Значение меньше нуля, а это недопустимо"
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
             else:
                 cur.execute("SELECT deposit, wallet FROM users WHERE dsID = ?", (member.id,))
                 res = cur.fetchone()
@@ -49,13 +49,13 @@ class Wallet(commands.Cog):
     Вы успешно вывели **{sum}** монет с карты
                 """
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.send_message(embed=embed, ephemeral=True)
         except Exception:
                 error = disnake.Embed(
         title="Ошибка", 
         description="Произошла недпридвиденная ошибка. Повторите попытку позже"    
     )   
-                await inter.response.send_message(embed=error)
+                await inter.response.send_message(embed=error, ephemeral=True)
         
 
 def setup(bot):

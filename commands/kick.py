@@ -6,7 +6,7 @@ class Kick(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='kick')
+    @commands.slash_command(name='kick', description="Исключить участника")
     @commands.has_permissions(kick_members=True)
     async def kick(self, inter: disnake.ApplicationCommandInteraction, member: disnake.Member, reason: str = "Не указана"):
         try:
@@ -15,15 +15,16 @@ class Kick(commands.Cog):
                     title="Ошибка",
                     description="Нельзя исключить самого себя!"
                 )
-                await inter.response.send_message(embed=embedError)
+                await inter.response.send_message(embed=embedError, ephemeral=True)
             elif member == await self.bot.fetch_user(1468639801833160887):
                 embedError = disnake.Embed(
                     title="Ошибка",
                     description="Я бот... Зачем меня исключать?"
                 )
-                await inter.response.send_message(embed=embedError)
+                await inter.response.send_message(embed=embedError, ephemeral=True)
             else:
                 log = await self.bot.fetch_channel(os.getenv('KICKS'))
+                await member.kick()
                 embedKick = disnake.Embed(
                     title="Исключение участника с сервера",
                     description=f"""

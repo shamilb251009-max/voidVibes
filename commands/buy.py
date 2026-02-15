@@ -19,38 +19,38 @@ def checkUser(member_id):
 class Buy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.slash_command(name='buy')
-    async def buy(self, inter: disnake.AppCommandInteraction, id: int):
+    @commands.command(name='buy')
+    async def buy(self, ctx, id: int):
         try:
-            checkUser(inter.author.id)
+            checkUser(ctx.author.id)
             cur.execute("SELECT * FROM store WHERE id = ?", (id,))
             result = cur.fetchone()
             amount = int(result[3])
             role_id = result[4]
             name = result[1]
-            if amount > checkUser(inter.author.id)[2]:
+            if amount > checkUser(ctx.author.id)[2]:
                 embed = disnake.Embed(
                     title="Недостаточно средств",
                     description="У вас недостаточно средств в кошельке, чтобы совершить покупку"
                 )
-                await inter.response.send_message(embed=embed)
+                await ctx.send(embed=embed)
             else:
                 if role_id is None:
-                    cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (checkUser(inter.author.id)[2]-amount, inter.author.id))
+                    cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (checkUser(ctx.author.id)[2]-amount, ctx.author.id))
                     con.commit()
-                    await inter.response.send_message(f"Вы успешно купили товар **{name}** за {amount} монет")
+                    await ctx.send(f"Вы успешно купили товар **{name}** за {amount} монет", ephemeral=True)
                 else:
-                    cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (checkUser(inter.author.id)[2]-amount, inter.author.id))
+                    cur.execute("UPDATE users SET wallet = ? WHERE dsID = ?", (checkUser(ctx.author.id)[2]-amount, ctx.author.id))
                     con.commit()
-                    role = await inter.guild.fetch_role(role_id)
-                    await inter.author.add_roles(role)
-                    await inter.response.send_message(f"Вы успешно купили товар **{name}** за {amount} монет")
+                    role = await ctx.guild.fetch_role(role_id)
+                    await ctx.author.add_roles(role)
+                    await ctx.send(f"Вы успешно купили товар **{name}** за {amount} монет", ephemeral=True)
         except Exception:
             error = disnake.Embed(
             title="Ошибка", 
             description="Произошла недпридвиденная ошибка. Повторите попытку позже"    
         )   
-            await inter.response.send_message(embed=error)
+            await ctx.send(embed=error, ephemeral=True)
     
 
 def setup(bot):

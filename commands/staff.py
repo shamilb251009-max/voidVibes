@@ -1,42 +1,45 @@
 import disnake
 from disnake.ext import commands
-import os
 
 class Staff(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name='staff')
+    @commands.slash_command(name='staff', description="Посмотреть список действующих модераторов")
     async def staff(self, inter: disnake.ApplicationCommandInteraction):
-        mod1 = inter.guild.get_role(1468651280074539114)
-        membersMod1 = mod1.members
+        owner = inter.guild.get_role(1458937520925577269) # Владелец сервера
+        co_owner = inter.guild.get_role(1458937524100792360) # Зам владельца сервера
+        curator = inter.guild.get_role(1458937527095394518) # Кураторы
+        seniorModerator = inter.guild.get_role(1471917129358901389) # Старшие модераторы
+        moderator = inter.guild.get_role(1458937530207699230)
+        juniorModerator = inter.guild.get_role(1458937532472365108)
+        ownerList = [member.mention for member in owner.members] if owner and owner.members else ['Отсутствует']
+        co_ownerList = [member.mention for member in co_owner.members] if co_owner and co_owner.members else ['Отсутствует']
+        curatorList = [member.mention for member in curator.members] if curator and curator.members else ['Отсутствует']
+        senModeratorList = [member.mention for member in seniorModerator.members] if seniorModerator and seniorModerator.members else ['Отсутствует']
+        moderatorList = [member.mention for member in moderator.members] if moderator and moderator.members else ['Отсутствует']
+        juniorModeratorList = [member.mention for member in juniorModerator.members] if juniorModerator and juniorModerator.members else ['Отсутствует']
 
-        mod2 = inter.guild.get_role(1468651334398906438)
-        membersMod2 = mod2.members
-
-        mod3 = inter.guild.get_role(1468651373322305577)
-        membersMod3 = mod3.members
-
-        headDevs = inter.guild.get_role(1468651424521916610)
-        membersHeadDev = headDevs.members
-        lst1 = [member.mention for member in membersMod1]
-        lst2 = [member.mention for member in membersMod2]
-        lst3 = [member.mention for member in membersMod3]
-        lstHeadDevs = [member.mention for member in membersHeadDev]
         await inter.response.send_message(embed=disnake.Embed(description=f"""                                        
-**Head of Developers**
-{'\n'.join(lstHeadDevs)}
+**Владелец сервера**
+{'\n'.join(ownerList)}
 
-**Модераторы третьего уровня**
-{'\n'.join(lst3)}
+**Зам.Владельца сервера**
+{'\n'.join(co_ownerList)}
 
-**Модераторы второго уровня**
-{'\n'.join(lst2)}
+**Кураторы**
+{'\n'.join(curatorList)}
 
-**Модераторы первого уровня**
-{'\n'.join(lst1)}
+**Старшие модераторы**
+{'\n'.join(senModeratorList)}
 
-"""))
+**Модераторы**
+{'\n'.join(moderatorList)}
+
+**Младшие модераторы**
+{'\n'.join(juniorModeratorList)}
+
+"""), ephemeral=True)
                 
 
 def setup(bot):
